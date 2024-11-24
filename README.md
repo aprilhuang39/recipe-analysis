@@ -2,7 +2,7 @@
 
 Our Cooking Time Analysis project, conducted at UCSD, focuses on predicting cooking time for various food items.
 
-Authors: April Huang & Clement Vo
+Authors: April Huang & Fong Clement Vo
 
 ## Introduction
 
