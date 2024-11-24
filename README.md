@@ -1,6 +1,6 @@
 # Cooking Time Analysis
 
-<sub> Authors: April Huang & Clement Vo </sub>
+Authors: April Huang & Clement Vo
 
 ## Introduction
 
