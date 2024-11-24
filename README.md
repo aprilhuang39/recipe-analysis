@@ -80,6 +80,13 @@ The head of our cleaned DataFrame:
 
 ### Bivariate Analysis
 
+<iframe
+    src="assets/bivariate_plot.html"
+    width="800"
+    height="600"
+    frameborder="0"
+></iframe>
+
 ### Interesting Aggregates
 
 ## Assessment of Missingness
