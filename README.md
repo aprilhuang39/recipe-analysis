@@ -88,6 +88,8 @@ The head of our cleaned DataFrame:
 
 ### Missingness Dependency
 
+## Hypothesis Testing
+
 ## Framing a Prediction Problem
 
 ## Baseline Model
