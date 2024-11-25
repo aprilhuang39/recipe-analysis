@@ -105,6 +105,8 @@ Given the p-value and the context of our data, these findings indicate that dess
 
 ## Framing a Prediction Problem
 
+Our prediction problem is a regression problem where we want to predict the preparation time to create a particular recipe. This is identified by the column `minutes` in our dataset. We chose R squared because that is the default metric our model used. 
+
 ## Baseline Model
 
 ## Final Model
