@@ -76,7 +76,7 @@ The head of our cleaned DataFrame:
     frameborder="0"
 ></iframe>
 
-This plot shows that the distribution of preparation time is highly right skewed.
+This plot shows that the distribution of preparation time is highly right skewed. We can see that the majority of recipes take around 20-39 minutes to prepare.
 
 ### Bivariate Analysis
 
@@ -86,6 +86,10 @@ This plot shows that the distribution of preparation time is highly right skewed
     height="600"
     frameborder="0"
 ></iframe>
+
+This plot shows the relationship between the number of steps in a recipe (`n_steps`) and its preparation time (`minutes`). The data indicates that while most recipes cluster around 0-40 steps and 0-500 minutes, there are some outliers with higher preparation times or steps, suggesting that most recipes are relatively quick and simple, but a few may be significantly more time-intensive.
+
+Note that for both of our graphs, we removed extreme outliers, recipes that surpassed 2000 minutes to prepare, in order to better visualize our data.
 
 ### Interesting Aggregates
 
@@ -112,6 +116,26 @@ This pivot table shows the number of reviews that belong to the corresponding mo
 In our dataset, the `rating` column is suspected to be NMAR. A plausible reason for this is that people who dislike or thinks neutrally about the recipe are less inclined to leave a rating. This is evident since we noticed that there were more higher ratings in our dataset than lower ratings. Our dataset does not contain specific information about the person who left the rating, so a possible method to make `rating` go from NMAR to MAR could be such data such as the age of the reviewer, the gender of the reviewer, etc.
 
 ### Missingness Dependency
+
+We observed missing values in `avg_rating`, and would like to find out if such missingness is dependent on other columns. We specifically looked at `n_steps` and `minutes`. For each column, we ran a permutation test with two groups: recipes with missing `avg_rating` and recipes with non-missing `avg_rating`. Then, we used the difference in means as our test statistic. Finally, we compute the p-value, and, using a significance level of 0.01, decide if `avg_rating` is MAR or MCAR on other columns. Below are our graphs representing our results.
+
+<iframe
+    src="assets/mar_plot.html"
+    width="800"
+    height="600"
+    frameborder="0"
+></iframe>
+
+For `n_steps`, the p_value for the difference in means between missing and non-missing `avg_rating` recipes is essentially zero. Since our p_value is lower than our significance level, we suspect that `avg_rating` is dependent, or in other words, MAR of `n_steps`.
+
+<iframe
+    src="assets/mcar_plot.html"
+    width="800"
+    height="600"
+    frameborder="0"
+></iframe>
+
+For `minutes`, the p_value for the difference in means between missing and non-missing `avg_rating` recipes is 0.026. Since our p_value is higher than our significance level, we suspect that `avg_rating` is independent, or in other words, MCAR of `minutes`.
 
 ## Hypothesis Testing
 We want to see if preparation time for desserts on average is different compared to foods in general. To do this, we performed a standard hyptothesis test on the following pair of hypotheses:
