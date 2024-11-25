@@ -117,7 +117,7 @@ We used a significance level of 0.01 since it is the standard convention.
 
 Test statistic: We used the absolute difference in means since we are directly comparing averages.
 
-To conduct our hypothesis test, we ran 1,000 simulations. For each simulation, we randomly selected from our data a sample the same size as the number of desserts in our data to ensure consistency and computed the average preparation time for the sample. Finally, we took the absolute difference between the simulated average and our observed population average, and computed the p-value. Our observed p-value was 0.043, and thus, we failed to reject our null hypothesis since our p-value was greater than our significance level. 
+To conduct our hypothesis test, we ran 1,000 simulations. For each simulation, we randomly selected from our data a sample the same size as the number of desserts in our data to ensure consistency and computed the average preparation time for the sample. Finally, we took the absolute difference between the simulated average and our observed population average, and computed the p-value. Our observed p-value was 0.043, and thus we failed to reject our null hypothesis since our p-value was greater than our significance level. 
 
 Given the p-value and the context of our data, these findings indicate that dessert preparation time on average is not significant different from preparation time on average for foods in general.
 
