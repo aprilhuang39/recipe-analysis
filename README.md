@@ -97,6 +97,8 @@ The head of our cleaned DataFrame:
 |      11 |    64 |   108 |   365 |  3987 | 11980 |
 |      12 |    84 |   102 |   331 |  3640 | 11676 |
 
+This pivot table shows the number of reviews that belong to the corresponding month and average rating, where the average rating is rounded for easier readability of the pivot table. From this pivot table, it is evident that regardless of the month, as the average rating increases, so does the number of reviews. Note that missing ratings were dropped in the creation of this pivot table.
+
 ## Assessment of Missingness
 
 ### NMAR Analysis
