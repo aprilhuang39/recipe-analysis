@@ -159,8 +159,30 @@ Our prediction problem is a regression problem where we want to predict the prep
 ## Baseline Model
 We started with a Random Forest Regressor as we consistently saw two clusters in our graphs of preparation time vs other quantitative variables. Random Forest Regressor is known to be good at regression problems involving two clusters. To start, we used `n_steps` and `n_ingredients` as we believed that maybe the more steps and more ingredients the recipe has, the longer it takes to prepare the recipe. 
 
-After cross validating with 2 validation sets, we got a mean R squared value of -0.1457. We chose to use 2 validation sets instead of the standard 5 because 2 validation sets gave us a higher R squared value. However, our baseline model needs improvement, as evident with the negative R squared, meaning that our model's performance is worse than the performance of a model that always picks the mean preparation time.
+After cross validating with 2 validation sets, we got a mean R squared value of -0.1457. We chose to use 2 validation sets instead of the standard 5 because 2 validation sets gave us a significantly higher R squared value. However, our baseline model needs improvement, as evident with the negative R squared, meaning that our model's performance is worse than the performance of a model that always picks the mean preparation time.
 
 ## Final Model
+We believed that `n_ratings` may affect `minutes` as people are less inclined to attempt recipes that take longer to prepare, thus possibly resulting in less ratings. Additionally, we thought that if recipes took longer, people might feel more negatively about the experience, resulting in a lower average rating.
+
+For our model tuning process, at first, we tried experimenting with hyperparameters for Random Forest Regressor. However, we had disappointing results, so we switched to Decision Tree Regressor. After calling GridSearchCV on Decision Tree Regressor with 2 validation sets, we found that our best hyperparameters were a max_depth of 3, a min_samples_leaf of 1, and min_samples_split of 2. This model has an R squared of -0.0725. While the R squared is still negative, this model performs two times better than our baseline model. 
+
+A plausible reason why our R squared is low for both of our models might be due to how the `minutes` are distributed. Since our data is highly skewed right, it is challenging to find models that perfectly predict `minutes`, regardless of what features we used. However, in the next section, we performed a fairness analysis, which may provide us insights into our model performance.
 
 ## Fairness Analysis
+We wanted to see if the year the recipe was created affected our model's performance. We divided our data into two groups: recipes created before and including 2012 and recipes created after 2012. 
+
+Before running our permutation test, we first created a new column in our dataset called `year`. Then, we called a Binarizer with a threshold of 2012 to split our data. Finally, we transformed `year` with our Binarizer, which stored our transformed `year` into a newly created column called `year_binarized`
+
+To perform the permutation test itself, we used the following pair of hypotheses:
+
+Null Hypothesis: Our model is fair. Its R Squared between the two groups are roughly the same, and any differences are due to random chance.
+
+Alternative Hypothesis: Our model is unfair. Its R Squared is different between older and newer recipes.
+
+We used a significance level of 0.01 since it is the standard convention.
+
+Test statistic: We used the absolute difference since we are directly comparing any difference in R squared between the two groups.
+
+To conduct our permutation test, we ran 1,000 simulations. For each simulation, we shuffled the `year_binarized` column and split the data based on the shuffled groups. Finally, we took the absolute difference in R squared between the shuffled two groups and computed the p-value. Our observed p-value was 0, and thus we rejected our null hypothesis since our p-value was less our significance level. 
+
+Given the p-value and the context of our data, these findings indicate that our model's performance is greatly affected by the year the recipe was created. After further exploration, we found that our model works well with recipes created before and including 2012, since our R squared is positive.
