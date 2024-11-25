@@ -85,6 +85,7 @@ The head of our cleaned DataFrame:
 ## Assessment of Missingness
 
 ### NMAR Analysis
+In our dataset, the `rating` column is suspected to be NMAR. A plausible reason for this is that people who dislike or thinks neutrally about the recipe are less inclined to leave a rating. This is evident since we noticed that there were more higher ratings in our dataset than lower ratings. Our dataset does not contain specific information about the person who left the rating, so a possible method to make `rating` go from NMAR to MAR could be such data such as the age of the reviewer, the gender of the reviewer, etc.
 
 ### Missingness Dependency
 
