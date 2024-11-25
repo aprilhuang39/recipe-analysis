@@ -126,6 +126,9 @@ Given the p-value and the context of our data, these findings indicate that dess
 Our prediction problem is a regression problem where we want to predict the preparation time to create a particular recipe. This is identified by the column `minutes` in our dataset. We chose R squared because that is the default metric our model used. 
 
 ## Baseline Model
+We started with a Random Forest Regressor as we consistently saw two clusters in our graphs of preparation time vs other quantitative variables. Random Forest Regressor is known to be good at regression problems involving two clusters. To start, we used `n_steps` and `n_ingredients`, as we believed that maybe the more steps and more ingredients the recipe has, the longer it takes to prepare the recipe. 
+
+After cross validating with 2 validation sets, we got a mean R squared value of -0.1457. We chose to use 2 validation sets instead of the standard 5 because 2 validation sets gave us a higher R squared value. However, our baseline model needs improvement, as evident with the negative R squared, meaning that our model's performance is worse than the performance of a model that always picks the mean preparation time.
 
 ## Final Model
 
