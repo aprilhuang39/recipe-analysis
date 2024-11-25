@@ -87,3 +87,11 @@ The head of our cleaned DataFrame:
 ### NMAR Analysis
 
 ### Missingness Dependency
+
+## Framing a Prediction Problem
+
+## Baseline Model
+
+## Final Model
+
+## Fairness Analysis
