@@ -115,6 +115,8 @@ This pivot table shows the number of reviews that belong to the corresponding mo
 ### NMAR Analysis
 In our dataset, the `rating` column is suspected to be NMAR. A plausible reason for this is that people who dislike or thinks neutrally about the recipe are less inclined to leave a rating. This is evident since we noticed that there were more higher ratings in our dataset than lower ratings. Our dataset does not contain specific information about the person who left the rating, so a possible method to make `rating` go from NMAR to MAR could be such data such as the age of the reviewer, the gender of the reviewer, etc.
 
+With this in mind, since we plan to use `avg_rating` to predict the preparation time and that `avg_rating` is based on `rating`, we will take into consideration that there are missing values in `rating`, and thus the values in the `avg_rating` column may be biased.
+
 ### Missingness Dependency
 
 We observed missing values in `avg_rating`, and would like to find out if such missingness is dependent on other columns. We specifically looked at `n_steps` and `minutes`. For each column, we ran a permutation test with two groups: recipes with missing `avg_rating` and recipes with non-missing `avg_rating`. Then, we used the difference in means as our test statistic. Finally, we compute the p-value, and, using a significance level of 0.01, decide if `avg_rating` is MAR or MCAR on other columns. Below are our graphs representing our results.
