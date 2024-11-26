@@ -93,22 +93,14 @@ Note that for both of our graphs, we removed extreme outliers, recipes that surp
 
 ### Interesting Aggregates
 
-|   month |   1.0 |   2.0 |   3.0 |   4.0 |   5.0 |
-|--------:|------:|------:|------:|------:|------:|
-|       1 |    70 |   112 |   390 |  4687 | 14039 |
-|       2 |    53 |   114 |   394 |  4375 | 13729 |
-|       3 |    59 |    98 |   453 |  5033 | 16087 |
-|       4 |    54 |    96 |   463 |  5321 | 15892 |
-|       5 |    57 |    83 |   339 |  4449 | 14475 |
-|       6 |    53 |   103 |   355 |  4825 | 16940 |
-|       7 |    49 |   102 |   356 |  4311 | 14239 |
-|       8 |    45 |   117 |   327 |  4403 | 15186 |
-|       9 |    51 |    81 |   400 |  4181 | 13653 |
-|      10 |    61 |    91 |   428 |  4484 | 13552 |
-|      11 |    64 |   108 |   365 |  3987 | 11980 |
-|      12 |    84 |   102 |   331 |  3640 | 11676 |
+| minute_bins   |   1.0 |   2.0 |   3.0 |   4.0 |   5.0 |
+|:--------------|------:|------:|------:|------:|------:|
+| 0-20          |   165 |   265 |  1111 | 14673 | 51445 |
+| 20-35         |   157 |   284 |  1058 | 12297 | 40059 |
+| 35-60         |   172 |   320 |  1161 | 12911 | 39883 |
+| 60+           |   206 |   338 |  1271 | 13815 | 40058 |
 
-This pivot table shows the number of reviews that belong to the corresponding month and average rating, where the average rating is rounded for easier readability of the pivot table. From this pivot table, it is evident that regardless of the month, as the average rating increases, so does the number of reviews. Note that missing ratings were dropped in the creation of this pivot table.
+This pivot table shows the number of reviews that belong to the corresponding preparation time group and average rating, where the average rating is rounded for easier readability of the pivot table and the minutes were divided into 25th, 50th, and 75th percentiles. From this pivot table, it is evident that regardless of the preparation time, as the average rating increases, so does the number of reviews. 
 
 ## Assessment of Missingness
 
