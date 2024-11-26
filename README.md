@@ -156,7 +156,7 @@ Given the p-value and the context of our data, these findings indicate that dess
 
 ## Framing a Prediction Problem
 
-Our prediction problem is a regression problem where we want to predict the preparation time to create a particular recipe. This is identified by the column `minutes` in our dataset. We chose R squared because that is the default metric our model used. 
+Our prediction problem is a regression problem where we want to predict the preparation time to create a particular recipe. This is identified by the column `minutes` in our dataset. We chose R squared because this metric can be used to compare the performance of our model to a model that always predicts the mean.
 
 ## Baseline Model
 We started with a Random Forest Regressor as we consistently saw two clusters in our graphs of preparation time vs other quantitative variables. Random Forest Regressor is known to be good at regression problems involving two clusters. To start, we used `n_steps` and `n_ingredients` as we believed that maybe the more steps and more ingredients the recipe has, the longer it takes to prepare the recipe. 
