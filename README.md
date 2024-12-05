@@ -100,6 +100,13 @@ Note that for both of our graphs, we removed extreme outliers, recipes that surp
 | 35-60         |   172 |   320 |  1161 | 12911 | 39883 |
 | 60+           |   206 |   338 |  1271 | 13815 | 40058 |
 
+| minute_bins | rounded_rating | 1.0   | 2.0   | 3.0   | 4.0   | 5.0   |
+|-------------|----------------|-------|-------|-------|-------|-------|
+| 0-20        |                | 165   | 265   | 1111  | 14673 | 51445 |
+| 20-35       |                | 157   | 284   | 1058  | 12297 | 40059 |
+| 35-60       |                | 172   | 320   | 1161  | 12911 | 39883 |
+| 60+         |                | 206   | 338   | 1271  | 13815 | 40058 |
+
 This pivot table shows the number of reviews that belong to the corresponding preparation time group and average rating, where the average rating is rounded for easier readability of the pivot table and the minutes were divided into 25th, 50th, and 75th percentiles. From this pivot table, it is evident that regardless of the preparation time, as the average rating increases, so does the number of reviews. 
 
 ## Assessment of Missingness
