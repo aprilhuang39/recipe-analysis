@@ -93,27 +93,21 @@ Note that for both of our graphs, we removed extreme outliers, recipes that surp
 
 ### Interesting Aggregates
 
-|   month |   1.0 |   2.0 |   3.0 |   4.0 |   5.0 |
-|--------:|------:|------:|------:|------:|------:|
-|       1 |    70 |   112 |   390 |  4687 | 14039 |
-|       2 |    53 |   114 |   394 |  4375 | 13729 |
-|       3 |    59 |    98 |   453 |  5033 | 16087 |
-|       4 |    54 |    96 |   463 |  5321 | 15892 |
-|       5 |    57 |    83 |   339 |  4449 | 14475 |
-|       6 |    53 |   103 |   355 |  4825 | 16940 |
-|       7 |    49 |   102 |   356 |  4311 | 14239 |
-|       8 |    45 |   117 |   327 |  4403 | 15186 |
-|       9 |    51 |    81 |   400 |  4181 | 13653 |
-|      10 |    61 |    91 |   428 |  4484 | 13552 |
-|      11 |    64 |   108 |   365 |  3987 | 11980 |
-|      12 |    84 |   102 |   331 |  3640 | 11676 |
+| minute_bins   |   1.0 |   2.0 |   3.0 |   4.0 |   5.0 |
+|:--------------|------:|------:|------:|------:|------:|
+| 0-20          |   165 |   265 |  1111 | 14673 | 51445 |
+| 20-35         |   157 |   284 |  1058 | 12297 | 40059 |
+| 35-60         |   172 |   320 |  1161 | 12911 | 39883 |
+| 60+           |   206 |   338 |  1271 | 13815 | 40058 |
 
-This pivot table shows the number of reviews that belong to the corresponding month and average rating, where the average rating is rounded for easier readability of the pivot table. From this pivot table, it is evident that regardless of the month, as the average rating increases, so does the number of reviews. Note that missing ratings were dropped in the creation of this pivot table.
+This pivot table shows the number of reviews that belong to the corresponding preparation time group and average rating, where the average rating is rounded for easier readability of the pivot table and the minutes were divided into 25th, 50th, and 75th percentiles. From this pivot table, it is evident that regardless of the preparation time, as the average rating increases, so does the number of reviews. 
 
 ## Assessment of Missingness
 
 ### NMAR Analysis
 In our dataset, the `rating` column is suspected to be NMAR. A plausible reason for this is that people who dislike or thinks neutrally about the recipe are less inclined to leave a rating. This is evident since we noticed that there were more higher ratings in our dataset than lower ratings. Our dataset does not contain specific information about the person who left the rating, so a possible method to make `rating` go from NMAR to MAR could be such data such as the age of the reviewer, the gender of the reviewer, etc.
+
+With this in mind, since we plan to use `avg_rating` to predict the preparation time and that `avg_rating` is based on `rating`, we will take into consideration that there are missing values in `rating`, and thus the values in the `avg_rating` column may be biased.
 
 ### Missingness Dependency
 
@@ -150,28 +144,28 @@ Test statistic: We used the absolute difference in means since we are directly c
 
 To conduct our hypothesis test, we ran 1,000 simulations. For each simulation, we randomly selected from our data a sample the same size as the number of desserts in our data to ensure consistency and computed the average preparation time for the sample. Finally, we took the absolute difference between the simulated average and our observed population average, and computed the p-value. Our observed p-value was 0.211, and thus we failed to reject our null hypothesis since our p-value was greater than our significance level. 
 
-Given the p-value and the context of our data, these findings indicate that dessert preparation time on average is not significant different from preparation time on average for foods in general.
+Given the p-value and the context of our data, these findings indicate that dessert preparation time on average is not significantly different from preparation time on average for foods in general.
 
 ## Framing a Prediction Problem
 
-Our prediction problem is a regression problem where we want to predict the preparation time to create a particular recipe. This is identified by the column `minutes` in our dataset. We chose R squared because that is the default metric our model used. 
+Our prediction problem is a regression problem where we want to predict the preparation time to create a particular recipe. This is identified by the column `minutes` in our dataset. We chose R squared because this metric can be used to compare the performance of our model to a model that always predicts the mean.
 
 ## Baseline Model
 We started with a Random Forest Regressor as we consistently saw two clusters in our graphs of preparation time vs other quantitative variables. Random Forest Regressor is known to be good at regression problems involving two clusters. To start, we used `n_steps` and `n_ingredients` as we believed that maybe the more steps and more ingredients the recipe has, the longer it takes to prepare the recipe. 
 
-After cross validating with 2 validation sets, we got a mean R squared value of -0.1457. We chose to use 2 validation sets instead of the standard 5 because 2 validation sets gave us a significantly higher R squared value. However, our baseline model needs improvement, as evident with the negative R squared, meaning that our model's performance is worse than the performance of a model that always picks the mean preparation time.
+After cross validating with 2 validation sets, we got a mean R squared value of -0.1646. We chose to use 2 validation sets instead of the standard 5 because 2 validation sets gave us a significantly higher R squared value. However, our baseline model needs improvement, as evident with the negative R squared, meaning that our model's performance is worse than the performance of a model that always picks the mean preparation time.
 
 ## Final Model
-We believed that `n_ratings` may affect `minutes` as people are less inclined to attempt recipes that take longer to prepare, thus possibly resulting in less ratings. Additionally, we thought that if recipes took longer, people might feel more negatively about the experience, resulting in a lower average rating.
+We believed that `n_ratings` may affect `minutes` as people are less inclined to attempt recipes that take longer to prepare, thus possibly resulting in less ratings. Additionally, we thought that if recipes took longer, people might feel more negatively about the experience, resulting in a lower average rating. Finally, we created a new column called `year` that represents the `year` the recipe was created. After some EDA, we noticed that as time progresses, the median preparation time increases, signifying a potential relationship between preparation time and year that the recipe was created.
 
-For our model tuning process, at first, we tried experimenting with hyperparameters for Random Forest Regressor. However, we had disappointing results, so we switched to Decision Tree Regressor. After calling GridSearchCV on Decision Tree Regressor with 2 validation sets, we found that our best hyperparameters were a max_depth of 3, a min_samples_leaf of 1, and min_samples_split of 2. This model has an R squared of -0.0725. While the R squared is still negative, this model performs two times better than our baseline model. 
+For our model tuning process, at first, we tried experimenting with hyperparameters for Random Forest Regressor. However, we had disappointing results, so we switched to Decision Tree Regressor. As an additional step that we did not implement in our baseline model but we now implement in our new model, we standardized all our columns to ensure that our model weights are not disporportionately high for columns with high numerical values. After calling GridSearchCV on Decision Tree Regressor with 2 validation sets, we found that our best hyperparameters were a max_depth of 3, a min_samples_leaf of 1, and min_samples_split of 2. This model has an R squared of 0.0126. While the R squared is still low, this model significantly improved from our baseline model as our R squared is now positive.
 
 A plausible reason why our R squared is low for both of our models might be due to how the `minutes` are distributed. Since our data is highly skewed right, it is challenging to find models that perfectly predict `minutes`, regardless of what features we used. However, in the next section, we performed a fairness analysis, which may provide us insights into our model performance.
 
 ## Fairness Analysis
-We wanted to see if the year the recipe was created affected our model's performance. We divided our data into two groups: recipes created before and including 2012 and recipes created after 2012. 
+We divided our data into two groups: recipes created before and including 2012 and recipes created after 2012. 
 
-Before running our permutation test, we first created a new column in our dataset called `year`. Then, we called a Binarizer with a threshold of 2012 to split our data. Finally, we transformed `year` with our Binarizer, which stored our transformed `year` into a newly created column called `year_binarized`
+Using `year`, we called a Binarizer with a threshold of 2012 to split our data. Then, we transformed `year` with our Binarizer, which stored our transformed `year` into a newly created column called `year_binarized`.
 
 To perform the permutation test itself, we used the following pair of hypotheses:
 
